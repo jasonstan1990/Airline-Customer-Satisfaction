@@ -1,38 +1,12 @@
+
 import streamlit as st
 import pandas as pd
 
 # Load dataset
 @st.cache_data
 def load_data():
-    data = pd.read_csv('Invistico_Airline.csv')
-    
-    # Data Cleaning Phase
-    st.subheader("Data Cleaning Process")
-    
-    # 1. Handle missing values: remove rows where 'Arrival Delay in Minutes' is missing
-    initial_data_length = len(data)
-    data = data.dropna(subset=['Arrival Delay in Minutes'])
-    cleaned_data_length = len(data)
-    st.write(f"Removed {initial_data_length - cleaned_data_length} rows with missing 'Arrival Delay in Minutes'.")
-    
-    # 2. Cap extreme outliers for delays
-    # Capping values for delays at the 99th percentile to remove extreme values
-    cap_departure_delay = data['Departure Delay in Minutes'].quantile(0.99)
-    cap_arrival_delay = data['Arrival Delay in Minutes'].quantile(0.99)
-    data['Departure Delay in Minutes'] = data['Departure Delay in Minutes'].clip(upper=cap_departure_delay)
-    data['Arrival Delay in Minutes'] = data['Arrival Delay in Minutes'].clip(upper=cap_arrival_delay)
-    st.write(f"Capped extreme delay values at the 99th percentile:")
-    st.write(f"- Max 'Departure Delay' capped at {cap_departure_delay} minutes.")
-    st.write(f"- Max 'Arrival Delay' capped at {cap_arrival_delay} minutes.")
-    
-    # 3. Correct data types for categorical columns
-    categorical_columns = ['satisfaction', 'Gender', 'Customer Type', 'Type of Travel', 'Class']
-    data[categorical_columns] = data[categorical_columns].astype('category')
-    st.write("Converted appropriate columns to 'categorical' data type.")
-    
-    return data
+    return pd.read_csv('Invistico_Airline.csv')
 
-# Load the cleaned data
 data = load_data()
 
 # Title of the application
